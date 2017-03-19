@@ -7,14 +7,14 @@ import (
 )
 
 type EmergencyInfo struct {
-	id		int
-	emergencyType	string
-	priority	int
-	location	time.Location
-	emergencyTime	time.Time
+	id		int		`json:"id"`
+	emergencyType	string		`json:"emergency_type"`
+	priority	int		`json:"priority"`
+	location	time.Location	`json:"location"`
+	updateTime	time.Time	`json:"updateTime"`
 }
 
-func (e EmergencyInfo) storeInfo() {
+func (e EmergencyInfo) storeEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
 
@@ -28,11 +28,22 @@ func (e EmergencyInfo) storeInfo() {
 func (e EmergencyInfo) getAllEmergencyInfo() []EmergencyInfo {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
-	var allEmergencyInfos []EmergencyInfo
+	var allEmergencyInfo []EmergencyInfo
 	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Find(bson.M{}).All(&allEmergencyInfos)
+	err := addInfo.Find(bson.M{}).All(&allEmergencyInfo)
 	if err != nil {
 		panic(err)
 	}
-	return allEmergencyInfos
+	return allEmergencyInfo
+}
+
+func (e EmergencyInfo) removeEmergencyInfo() {
+	localSession := db.Session.Copy()
+	defer localSession.Close()
+
+	addInfo := localSession.DB("db").C("info")
+	err := addInfo.Remove(bson.M{"id" : e.id})
+	if err != nil {
+		panic(err)
+	}
 }
