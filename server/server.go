@@ -30,6 +30,7 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 // Handler for GET requests on /map
 // Returns a JSON that contains all the EmergencyInfo entries in the db
+// that have a date greater than ps.time
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprintf(w, "THIS IS Were I send a map to Ios\n")
 }
