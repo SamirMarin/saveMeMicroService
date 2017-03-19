@@ -20,13 +20,11 @@ func init() {
 // Extracts Emergency info from POST request, and stores in database
 func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Println("IM here!!!!")
-	test := r.ParseForm()
-	fmt.Println("im the body", test)
 	var emrInfo models.EmergencyInfo
 	if r.Body == nil {
 		fmt.Println("body is nil")
 	}
-	err := json.NewDecoder(r.Body).Decode(emrInfo)
+	err := json.NewDecoder(r.Body).Decode(&emrInfo)
 	if err != nil {
 		fmt.Println("json error")
 	}
