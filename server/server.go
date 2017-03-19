@@ -86,6 +86,6 @@ func Run() {
 	router.POST("/help", help)
 	router.GET("/map/:updateTime", getMap)
 	fmt.Println("now before")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe("128.189.89.251:9999", router))
 	fmt.Println("here")
 }

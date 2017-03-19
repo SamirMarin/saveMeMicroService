@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/SamirMarin/saveMeMicroService/db"
 	"gopkg.in/mgo.v2/bson"
+	"fmt"
 )
 
 type EmergencyInfo struct {
@@ -29,7 +30,9 @@ func (e EmergencyInfo) GetAllEmergencyInfo(limit string) []EmergencyInfo {
 	defer localSession.Close()
 	var allEmergencyInfo []EmergencyInfo
 	localDB := localSession.DB("db").C("info")
+	fmt.Println("before the stuck", limit)
 	err := localDB.Find(bson.M{"updatetime" : bson.M{"$gte" : limit}}).All(&allEmergencyInfo)
+	fmt.Println("yes I go through")
 	if err != nil {
 		//panic(err)
 	}
