@@ -1,20 +1,20 @@
 package models
 
 import (
-	"time"
 	"github.com/SamirMarin/saveMeMicroService/db"
 	"gopkg.in/mgo.v2/bson"
+	"time"
 )
 
 type EmergencyInfo struct {
-	id		int		`json:"id"`
-	emergencyType	string		`json:"emergency_type"`
-	priority	int		`json:"priority"`
-	location	time.Location	`json:"location"`
-	updateTime	time.Time	`json:"updateTime"`
+	Id		int		`json:"id"`
+	EmergencyType	string		`json:"emergency_type"`
+	Priority	int		`json:"priority"`
+	Location	time.Location	`json:"location"`
+	UpdateTime	time.Time	`json:"update_time"`
 }
 
-func (e EmergencyInfo) storeEmergencyInfo() {
+func (e EmergencyInfo) StoreEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
 
@@ -25,7 +25,7 @@ func (e EmergencyInfo) storeEmergencyInfo() {
 	}
 }
 
-func (e EmergencyInfo) getAllEmergencyInfo() []EmergencyInfo {
+func (e EmergencyInfo) GetAllEmergencyInfo() []EmergencyInfo {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
 	var allEmergencyInfo []EmergencyInfo
@@ -37,13 +37,14 @@ func (e EmergencyInfo) getAllEmergencyInfo() []EmergencyInfo {
 	return allEmergencyInfo
 }
 
-func (e EmergencyInfo) removeEmergencyInfo() {
+func (e EmergencyInfo) RemoveEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
 
 	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Remove(bson.M{"id" : e.id})
+	err := addInfo.Remove(bson.M{"id" : e.Id, "emergency_type" : e.EmergencyType, "priority" : e.Priority,
+		"location" : e.Location, "update_time" : e.UpdateTime})
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 }
