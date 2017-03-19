@@ -5,6 +5,7 @@ import "gopkg.in/mgo.v2"
 var (
 	Session mgo.Session
 )
+
 func ConnectMongoDb () {
 	session, err := mgo.Dial("localhost")
 	if err != nil {

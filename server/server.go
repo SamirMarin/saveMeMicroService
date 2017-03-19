@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"encoding/json"
 )
 
 // Handler for POST requests on /help
@@ -33,6 +34,8 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var emrInfo models.EmergencyInfo
 	emrInfo.UpdateTime = ps.ByName("updateTime")
+	lstEmrInfo := emrInfo.GetAllEmergencyInfo(emrInfo.UpdateTime)
+	json.NewEncoder(w).Encode(lstEmrInfo)
 }
 func convertToFloat(flt string) float64 {
 	f, err := strconv.ParseFloat(flt, 64)
@@ -54,6 +57,6 @@ func convertToInt(strInt string) int {
 func Run() {
 	router := httprouter.New()
 	router.POST("/help", help)
-	router.GET("/map", getMap)
+	router.GET("/map/:updateTime", getMap)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
