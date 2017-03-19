@@ -6,16 +6,12 @@ import (
 )
 
 type EmergencyInfo struct {
-	Id          int     `json:"id"`
-	Description string  `json:"emergency_type"`
+	Id          string  `json:"id"`
+	Desc        string  `json:"desc"`
 	Priority    int     `json:"priority"`
-	Location    LatLong `json:"location"`
+	Lat         float64 `json:"lat"`
+	Lon         float64 `json:"lon"`
 	UpdateTime  string  `json:"update_time"`
-}
-
-type LatLong struct {
-	Lat float64
-	Lon float64
 }
 
 func (e EmergencyInfo) StoreEmergencyInfo() {
@@ -45,8 +41,8 @@ func (e EmergencyInfo) RemoveEmergencyInfo() {
 	defer localSession.Close()
 
 	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Remove(bson.M{"id": e.Id, "emergency_type": e.Description, "priority": e.Priority,
-		"location": e.Location, "update_time": e.UpdateTime})
+	err := addInfo.Remove(bson.M{"id": e.Id, "desc": e.Desc, "priority": e.Priority,
+		"lat": e.Lat, "lon": e.Lon, "update_time": e.UpdateTime})
 	if err != nil {
 		//panic(err)
 	}

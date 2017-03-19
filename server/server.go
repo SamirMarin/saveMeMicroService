@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"github.com/SamirMarin/saveMeMicroService/models"
 	"github.com/julienschmidt/httprouter"
 	"log"
@@ -12,20 +11,19 @@ import (
 // Handler for POST requests on /help
 // Extracts Emergency info from POST request, and stores in database
 func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fmt.Fprint(w, "Welcome!\n")
 	var emrInfo models.EmergencyInfo
-	var latLong models.LatLong
+	id := ps.ByName("id")
+	description := ps.ByName("desc")
+	priority := convertToInt(ps.ByName("priority"))
 	lat := convertToFloat(ps.ByName("lat"))
 	lon := convertToFloat(ps.ByName("lon"))
-	latLong.Lat = lat
-	latLong.Lon = lon
-	priority := convertToInt(ps.ByName("priority"))
-	description := ps.ByName("EmergencyType")
-	time := ps.ByName("time")
-	emrInfo.Description = description
+	updateTime := ps.ByName("updateTime")
+	emrInfo.Id = id
+	emrInfo.Desc = description
 	emrInfo.Priority = priority
-	emrInfo.UpdateTime = time
-	emrInfo.Location = latLong
+	emrInfo.Lat = lat
+	emrInfo.Lon = lon
+	emrInfo.UpdateTime = updateTime
 	emrInfo.StoreEmergencyInfo()
 }
 
@@ -33,7 +31,8 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 // Returns a JSON that contains all the EmergencyInfo entries in the db
 // that have a date greater than ps.time
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fmt.Fprintf(w, "THIS IS Were I send a map to Ios\n")
+	var emrInfo models.EmergencyInfo
+	emrInfo.UpdateTime = ps.ByName("updateTime")
 }
 func convertToFloat(flt string) float64 {
 	f, err := strconv.ParseFloat(flt, 64)
