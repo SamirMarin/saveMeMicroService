@@ -20,7 +20,7 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	latLong.Lat = lat
 	latLong.Lon = lon
 	priority := convertToInt(ps.ByName("priority"))
-	description := ps.ByName("EmergencyType")
+	description := ps.ByName("description")
 	time := ps.ByName("time")
 	emrInfo.Description = description
 	emrInfo.Priority = priority

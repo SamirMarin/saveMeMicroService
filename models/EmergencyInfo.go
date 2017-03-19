@@ -6,11 +6,11 @@ import (
 )
 
 type EmergencyInfo struct {
-	Id          int     `json:"id"`
-	Description string  `json:"description"`
-	Priority    int     `json:"priority"`
-	Location    LatLong `json:"location"`
-	UpdateTime  string  `json:"update_time"`
+	Id          string	`json:"id"`
+	Description string	`json:"description"`
+	Priority    int		`json:"priority"`
+	Location    LatLong	`json:"location"`
+	UpdateTime  string	`json:"update_time"`
 }
 
 type LatLong struct {
