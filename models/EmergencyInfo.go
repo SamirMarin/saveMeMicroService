@@ -1,18 +1,18 @@
 package models
 
 import (
-	"time"
 	"github.com/SamirMarin/saveMeMicroService/db"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type EmergencyInfo struct {
-	Id		int		`json:"id"`
-	EmergencyType	string		`json:"emergency_type"`
-	Priority	int		`json:"priority"`
-	Location	LatLong		`json:"location"`
-	UpdateTime	string  	`json:"updateTime"`
+	Id          int     `json:"id"`
+	Description string  `json:"emergency_type"`
+	Priority    int     `json:"priority"`
+	Location    LatLong `json:"location"`
+	UpdateTime  string  `json:"update_time"`
 }
+
 type LatLong struct {
 	Lat float64
 	Lon float64
@@ -45,8 +45,9 @@ func (e EmergencyInfo) RemoveEmergencyInfo() {
 	defer localSession.Close()
 
 	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Remove(bson.M{"id" : e.id})
+	err := addInfo.Remove(bson.M{"id": e.Id, "emergency_type": e.Description, "priority": e.Priority,
+		"location": e.Location, "update_time": e.UpdateTime})
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 }
