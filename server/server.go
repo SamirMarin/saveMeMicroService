@@ -6,17 +6,24 @@ import (
 	"net/http"
 	"log"
 	"github.com/SamirMarin/saveMeMicroService/models"
-	"time"
 )
 
 func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprint(w, "Welcome!\n")
 	var emrInfo models.EmergencyInfo
+	var latLong models.LatLong
 	lat := float64(ps.ByName("lat"))
 	lon := float64(ps.ByName("lon"))
+	latLong.Lat = lat
+	latLong.Lon = lon
 	priority := int(ps.ByName("priority"))
-	description := ps.ByName("description")
+	description := ps.ByName("EmergencyType")
 	time := ps.ByName("time")
+	emrInfo.EmergencyType = description
+	emrInfo.Priority = priority
+	emrInfo.UpdateTime = time
+	emrInfo.Location = latLong
+	emrInfo.StoreEmergencyInfo()
 }
 
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
