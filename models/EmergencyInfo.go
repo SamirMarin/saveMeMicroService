@@ -30,7 +30,6 @@ func (e EmergencyInfo) GetAllEmergencyInfo(limit string) []EmergencyInfo {
 	var allEmergencyInfo []EmergencyInfo
 	localDB := localSession.DB("db").C("info")
 	err := localDB.Find(bson.M{"updatetime" : bson.M{"$gte" : limit}}).All(&allEmergencyInfo)
-	//err := localDB.Find(bson.M{}).All(&allEmergencyInfo)
 	if err != nil {
 		//panic(err)
 	}
@@ -51,4 +50,16 @@ func (e EmergencyInfo) RemoveEmergencyInfo() {
 	if err != nil {
 		//panic(err)
 	}
+}
+
+func (e EmergencyInfo) GetEmergencyInfo(id string) EmergencyInfo {
+	localSession := db.Session.Copy()
+	defer localSession.Close()
+	var emergencyInfo EmergencyInfo
+	localDB := localSession.DB("db").C("info")
+	err := localDB.Find(bson.M{"id" : id}).One(&emergencyInfo)
+	if err != nil {
+		//panic(err)
+	}
+	return emergencyInfo
 }
