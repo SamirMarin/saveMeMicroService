@@ -13,12 +13,12 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
+	fmt.Fprintf(w, "THIS IS Were I send a map to Ios\n")
 }
 
 func Run() {
 	router := httprouter.New()
 	router.POST("/help", help)
-	router.GET("/hello", getMap)
+	router.GET("/map", getMap)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
