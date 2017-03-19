@@ -21,19 +21,19 @@ type LatLong struct {
 func (e EmergencyInfo) StoreEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
-	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Insert(e)
+	localDB := localSession.DB("db").C("info")
+	err := localDB.Insert(e)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (e EmergencyInfo) GetAllEmergencyInfo() []EmergencyInfo {
+func (e EmergencyInfo) GetAllEmergencyInfo(limit string) []EmergencyInfo {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
 	var allEmergencyInfo []EmergencyInfo
-	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Find(bson.M{}).All(&allEmergencyInfo)
+	localDB := localSession.DB("db").C("info")
+	err := localDB.Find(bson.M{"update_time" : {"$gte" : limit}}).All(&allEmergencyInfo)
 	if err != nil {
 		panic(err)
 	}
@@ -44,8 +44,8 @@ func (e EmergencyInfo) RemoveEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
 
-	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Remove(bson.M{"id" : e.Id, "emergency_type" : e.EmergencyType, "priority" : e.Priority,
+	localDB := localSession.DB("db").C("info")
+	err := localDB.Remove(bson.M{"id" : e.Id, "emergency_type" : e.EmergencyType, "priority" : e.Priority,
 		"location" : e.Location, "update_time" : e.UpdateTime})
 	if err != nil {
 		//panic(err)
