@@ -6,14 +6,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
-	"html/template"
 	"strconv"
 )
-type Page struct {
-	Title string
-	Body []byte
-}
-var templates = template.Must(template.ParseFiles("edit.html"))
 
 // Handler for POST requests on /help
 // Extracts Emergency info from POST request, and stores in database
@@ -40,12 +34,6 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 // that have a date greater than ps.time
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprintf(w, "THIS IS Were I send a map to Ios\n")
-}
-func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	err := templates.ExecuteTemplate(w, tmpl +".html",p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
 }
 func convertToFloat(flt string) float64 {
 	f, err := strconv.ParseFloat(flt, 64)
