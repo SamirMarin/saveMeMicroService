@@ -55,5 +55,6 @@ fabric.properties
 # modules.xml
 # .idea/misc.xml
 # *.ipr
+*.exe
 
 # End of https://www.gitignore.io/api/jetbrains
