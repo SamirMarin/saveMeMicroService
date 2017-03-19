@@ -13,18 +13,12 @@ import (
 // Extracts Emergency info from POST request, and stores in database
 func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var emrInfo models.EmergencyInfo
-	id := ps.ByName("id")
-	description := ps.ByName("desc")
-	priority := convertToInt(ps.ByName("priority"))
-	lat := convertToFloat(ps.ByName("lat"))
-	lon := convertToFloat(ps.ByName("lon"))
-	updateTime := ps.ByName("updateTime")
-	emrInfo.Id = id
-	emrInfo.Desc = description
-	emrInfo.Priority = priority
-	emrInfo.Lat = lat
-	emrInfo.Lon = lon
-	emrInfo.UpdateTime = updateTime
+	emrInfo.Id = ps.ByName("id")
+	emrInfo.Desc = ps.ByName("desc")
+	emrInfo.Priority = convertToInt(ps.ByName("priority"))
+	emrInfo.Lat = convertToFloat(ps.ByName("lat"))
+	emrInfo.Lon = convertToFloat(ps.ByName("lon"))
+	emrInfo.UpdateTime = ps.ByName("updateTime")
 	emrInfo.StoreEmergencyInfo()
 }
 

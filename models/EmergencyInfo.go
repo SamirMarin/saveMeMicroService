@@ -11,7 +11,7 @@ type EmergencyInfo struct {
 	Priority    int     `json:"priority"`
 	Lat         float64 `json:"lat"`
 	Lon         float64 `json:"lon"`
-	UpdateTime  string  `json:"update_time"`
+	UpdateTime  string  `json:"updatetime"`
 }
 
 func (e EmergencyInfo) StoreEmergencyInfo() {
@@ -29,9 +29,10 @@ func (e EmergencyInfo) GetAllEmergencyInfo(limit string) []EmergencyInfo {
 	defer localSession.Close()
 	var allEmergencyInfo []EmergencyInfo
 	localDB := localSession.DB("db").C("info")
-	err := localDB.Find(bson.M{"update_time" : bson.M{"$gte" : limit}}).All(&allEmergencyInfo)
+	err := localDB.Find(bson.M{"updatetime" : bson.M{"$gte" : limit}}).All(&allEmergencyInfo)
+	//err := localDB.Find(bson.M{}).All(&allEmergencyInfo)
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 	return allEmergencyInfo
 }
@@ -41,8 +42,12 @@ func (e EmergencyInfo) RemoveEmergencyInfo() {
 	defer localSession.Close()
 
 	addInfo := localSession.DB("db").C("info")
-	err := addInfo.Remove(bson.M{"id": e.Id, "desc": e.Desc, "priority": e.Priority,
-		"lat": e.Lat, "lon": e.Lon, "update_time": e.UpdateTime})
+	err := addInfo.Remove(bson.M{"id" : e.Id, "$and" : []interface{} {
+		bson.M{"desc" : e.Desc, "$and" : []interface{} {
+			bson.M{"priority" : e.Priority, "$and" : []interface{} {
+				bson.M{"lat" : e.Lat, "$and" : []interface{} {
+					bson.M{"lon" : e.Lon, "$and" : []interface{} {
+						bson.M{"updatetime" : e.UpdateTime}}}}}}}}}}})
 	if err != nil {
 		//panic(err)
 	}
