@@ -6,7 +6,13 @@ import (
 	"net/http"
 	"log"
 	"github.com/SamirMarin/saveMeMicroService/models"
+	"html/template"
 )
+type Page struct {
+	Title string
+	Body []byte
+}
+var templates = template.Must(template.ParseFiles("edit.html"))
 
 func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprint(w, "Welcome!\n")
@@ -28,6 +34,12 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprintf(w, "THIS IS Were I send a map to Ios\n")
+}
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+	err := templates.ExecuteTemplate(w, tmpl +".html",p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func Run() {
