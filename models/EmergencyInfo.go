@@ -21,11 +21,7 @@ func (e EmergencyInfo) String() string {
 
 func (e EmergencyInfo) StoreEmergencyInfo() {
 	localSession := db.Session.Copy()
-	//defer localSession.Close()
-	fmt.Println("here1 before local connection")
 	localDB := localSession.DB("db").C("info")
-	fmt.Println("before the insert")
-	fmt.Println(e)
 	err := localDB.Insert(e)
 	if err != nil {
 		panic(err)
@@ -37,9 +33,7 @@ func (e EmergencyInfo) GetAllEmergencyInfo(limit string) []EmergencyInfo {
 	defer localSession.Close()
 	var allEmergencyInfo []EmergencyInfo
 	localDB := localSession.DB("db").C("info")
-	fmt.Println("before the stuck", limit)
 	err := localDB.Find(bson.M{"updatetime" : bson.M{"$gte" : limit}}).All(&allEmergencyInfo)
-	fmt.Println("yes I go through")
 	if err != nil {
 		//panic(err)
 	}
@@ -49,7 +43,6 @@ func (e EmergencyInfo) GetAllEmergencyInfo(limit string) []EmergencyInfo {
 func (e EmergencyInfo) RemoveEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
-
 	addInfo := localSession.DB("db").C("info")
 	err := addInfo.Remove(bson.M{"id": e.Id, "$and": []interface{}{
 		bson.M{"desc": e.Desc, "$and": []interface{}{

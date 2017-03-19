@@ -24,11 +24,7 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(emrInfo)
 	emrInfo.StoreEmergencyInfo()
-	fmt.Println("here we are about to get all info")
-	fmt.Println(emrInfo.GetAllEmergencyInfo("2017-03-19T11:25:18.723Z"))
-	fmt.Println("nothing in the info")
 }
 
 type arrOfEmergencyInfo struct {
