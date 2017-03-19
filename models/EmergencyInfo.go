@@ -12,7 +12,10 @@ type EmergencyInfo struct {
 	emergencyTime	time.Time
 }
 
-func (e EmergencyInfo) anyName() EmergencyInfo {
+func (e EmergencyInfo) storeInfo() {
 
 }
 
+func (e EmergencyInfo) getAllEmergencyInfo() {
+
+}
