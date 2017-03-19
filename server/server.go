@@ -24,28 +24,19 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Println("im the body", test)
 	var emrInfo models.EmergencyInfo
 	if r.Body == nil {
-		http.Error(w, "please send requestb", 400)
+		fmt.Println("body is nil")
 	}
 	err := json.NewDecoder(r.Body).Decode(emrInfo)
 	if err != nil {
-		http.Error(w, err.Error(), 400)
+		fmt.Println("json error")
 	}
 	fmt.Println(emrInfo.Id)
-	//id := ps.ByName("id")
-
-	//fmt.Println("the id is", id)
-	//description := ps.ByName("desc")
-	//priority := convertToInt(ps.ByName("priority"))
-	//lat := convertToFloat(ps.ByName("lat"))
-	//lon := convertToFloat(ps.ByName("lon"))
-	//updateTime := ps.ByName("updateTime")
-	//emrInfo.Id = id
-	//emrInfo.Desc = description
-	//emrInfo.Priority = priority
-	//emrInfo.Lat = lat
-	//emrInfo.Lon = lon
-	//emrInfo.UpdateTime = updateTime
-	//emrInfo.StoreEmergencyInfo()
+	fmt.Println(emrInfo.Desc)
+	fmt.Println(emrInfo.Priority)
+	fmt.Println(emrInfo.Lat)
+	fmt.Println(emrInfo.Lon)
+	fmt.Println(emrInfo.UpdateTime)
+	emrInfo.StoreEmergencyInfo()
 }
 
 // Handler for GET requests on /map
