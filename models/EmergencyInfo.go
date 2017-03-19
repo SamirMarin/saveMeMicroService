@@ -3,21 +3,24 @@ package models
 import (
 	"github.com/SamirMarin/saveMeMicroService/db"
 	"gopkg.in/mgo.v2/bson"
-	"time"
 )
 
 type EmergencyInfo struct {
 	Id		int		`json:"id"`
 	EmergencyType	string		`json:"emergency_type"`
 	Priority	int		`json:"priority"`
-	Location	time.Location	`json:"location"`
-	UpdateTime	time.Time	`json:"update_time"`
+	Location	LatLong		`json:"location"`
+	UpdateTime	string		`json:"update_time"`
+}
+
+type LatLong struct {
+	Lat float64
+	Lon float64
 }
 
 func (e EmergencyInfo) StoreEmergencyInfo() {
 	localSession := db.Session.Copy()
 	defer localSession.Close()
-
 	addInfo := localSession.DB("db").C("info")
 	err := addInfo.Insert(e)
 	if err != nil {

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/SamirMarin/saveMeMicroService/server"
-	//"github.com/SamirMarin/saveMeMicroService/db"
+	"github.com/SamirMarin/saveMeMicroService/db"
 )
 
 
@@ -10,6 +10,6 @@ import (
 
 
 func main(){
-	//db.ConnectMongoDb()
+	db.ConnectMongoDb()
 	server.Run()
 }
