@@ -1,15 +1,15 @@
 package server
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/SamirMarin/saveMeMicroService/models"
 	"github.com/julienschmidt/httprouter"
+	"html/template"
 	"log"
 	"net/http"
-	"strconv"
-	"encoding/json"
-	"html/template"
-	"fmt"
 )
+
 var tpl *template.Template
 
 func init() {
@@ -19,21 +19,12 @@ func init() {
 // Handler for POST requests on /help
 // Extracts Emergency info from POST request, and stores in database
 func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fmt.Println("IM here!!!!")
 	var emrInfo models.EmergencyInfo
-	if r.Body == nil {
-		fmt.Println("body is nil")
-	}
 	err := json.NewDecoder(r.Body).Decode(&emrInfo)
 	if err != nil {
-		fmt.Println("json error")
+		fmt.Println(err)
 	}
-	fmt.Println(emrInfo.Id)
-	fmt.Println(emrInfo.Desc)
-	fmt.Println(emrInfo.Priority)
-	fmt.Println(emrInfo.Lat)
-	fmt.Println(emrInfo.Lon)
-	fmt.Println(emrInfo.UpdateTime)
+	fmt.Println(emrInfo)
 	emrInfo.StoreEmergencyInfo()
 }
 
@@ -46,27 +37,12 @@ func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	lstEmrInfo := emrInfo.GetAllEmergencyInfo(emrInfo.UpdateTime)
 	json.NewEncoder(w).Encode(lstEmrInfo)
 }
-func convertToFloat(flt string) float64 {
-	f, err := strconv.ParseFloat(flt, 64)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-	return f
-}
-func convertToInt(strInt string) int {
-	newInt, err := strconv.Atoi(strInt)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return newInt
-
-}
 func test(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	//title := "edit"
-	type data struct{
+	type data struct {
 		Title string
-		Body string
+		Body  string
 	}
 	//dataVal := data{"hello","test"}
 	t, _ := template.ParseFiles("edit.html")
@@ -78,7 +54,6 @@ func index(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 		fmt.Println("error")
 	}
 }
-
 
 func Run() {
 	router := httprouter.New()
