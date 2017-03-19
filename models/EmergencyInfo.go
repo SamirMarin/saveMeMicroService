@@ -14,6 +14,7 @@ type EmergencyInfo struct {
 
 func (e EmergencyInfo) storeInfo() {
 
+
 }
 
 func (e EmergencyInfo) getAllEmergencyInfo() {
