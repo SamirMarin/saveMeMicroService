@@ -7,8 +7,9 @@ import (
 	"log"
 )
 
-func help(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	fmt.Fprint(w, "Welcome!\n")
+
 }
 
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
