@@ -21,8 +21,11 @@ func (e EmergencyInfo) String() string {
 
 func (e EmergencyInfo) StoreEmergencyInfo() {
 	localSession := db.Session.Copy()
-	defer localSession.Close()
+	//defer localSession.Close()
+	fmt.Println("here1 before local connection")
 	localDB := localSession.DB("db").C("info")
+	fmt.Println("before the insert")
+	fmt.Println(e)
 	err := localDB.Insert(e)
 	if err != nil {
 		panic(err)

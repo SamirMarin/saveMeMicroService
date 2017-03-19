@@ -3,7 +3,7 @@ package db
 import "gopkg.in/mgo.v2"
 
 var (
-	Session mgo.Session
+	Session *mgo.Session
 )
 
 func ConnectMongoDb () {
@@ -11,8 +11,8 @@ func ConnectMongoDb () {
 	if err != nil {
 		panic(err)
 	}
-	defer session.Close()
+	//defer session.Close()
 
 	session.SetMode(mgo.Monotonic, true)
-	Session = *session
+	Session = session
 }

@@ -26,18 +26,31 @@ func help(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 	fmt.Println(emrInfo)
 	emrInfo.StoreEmergencyInfo()
+	fmt.Println("here we are about to get all info")
+	fmt.Println(emrInfo.GetAllEmergencyInfo("2017-03-19T11:25:18.723Z"))
+	fmt.Println("nothing in the info")
 }
 
+type arrOfEmergencyInfo struct {
+	emergencyInfo []models.EmergencyInfo `json: "emergencyInfo"`
+}
 // Handler for GET requests on /map
 // Returns a JSON that contains all the EmergencyInfo entries in the db
 // that have a date greater than ps.time
 func getMap(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Println("Im here")
 	var emrInfo models.EmergencyInfo
 	emrInfo.UpdateTime = ps.ByName("updateTime")
-	lstEmrInfo := emrInfo.GetAllEmergencyInfo(emrInfo.UpdateTime)
-	json.NewEncoder(w).Encode(lstEmrInfo)
+	lstEmrInfo := emrInfo.GetAllEmergencyInfo("2017-03-19T11:25:18.723Z")
+	resBody, err := json.MarshalIndent(lstEmrInfo, "", " ")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	w.Write(resBody)
+	if err != nil {
+		fmt.Println("this is the error", err)
+	}
 }
-
+//test function written for testing without ios
 func test(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	//title := "edit"
 	type data struct {
