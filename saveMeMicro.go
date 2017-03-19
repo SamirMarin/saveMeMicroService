@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/SamirMarin/saveMeMicroSevice/server"
-	//"github.com/SamirMarin/saveMeMicroSevice/db"
+	"github.com/SamirMarin/saveMeMicroService/server"
+	//"github.com/SamirMarin/saveMeMicroService/db"
 )
 
 
